@@ -2,8 +2,6 @@
 #include <kernel/stat.h>
 #include <user/user.h>
 
-int i_pow(int, int);
-
 int main(int argc, char* argv[]) {
 	int pid = fork();
 
@@ -15,10 +13,3 @@ int main(int argc, char* argv[]) {
 	exit(0);
 }
 
-int i_pow(int a, int b) {
-	if (b == 0) {
-		return 1;
-	}
-
-	return a * i_pow(a, b - 1);
-}
