@@ -8,8 +8,7 @@
 char buf[1024];
 int match(char*, char*);
 
-void
-grep(char *pattern, int fd)
+void grep(char *pattern, int fd)
 {
   int n, m;
   char *p, *q;
