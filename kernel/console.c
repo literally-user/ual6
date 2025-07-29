@@ -25,11 +25,7 @@
 #define BACKSPACE 0x100
 #define C(x)  ((x)-'@')  // Control-x
 
-//
-// send one character to the uart.
-// called by printf(), and to echo input characters,
-// but not from write().
-//
+
 void
 consputc(int c)
 {
