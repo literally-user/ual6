@@ -143,6 +143,7 @@ UPROGS=\
 	$U/_zombie\
 	$U/_sleep\
 	$U/_clear\
+	$U/_freemem\
 
 fs.img: mkfs/mkfs README.md $(UPROGS)
 	mkfs/mkfs fs.img README.md $(UPROGS)

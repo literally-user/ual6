@@ -6,6 +6,9 @@
 #include "spinlock.h"
 #include "proc.h"
 
+int freemem_pages(void);
+
+
 uint64
 sys_exit(void)
 {
@@ -91,3 +94,10 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64
+sys_freemem(void)
+{
+  return freemem_pages() * PGSIZE;
+}
+
