@@ -33,8 +33,7 @@ struct {
   struct buf head;
 } bcache;
 
-void
-binit(void)
+void binit(void)
 {
   struct buf *b;
 
@@ -64,17 +63,20 @@ bget(uint dev, uint blockno)
 
   // Is the block already cached?
   for(b = bcache.head.next; b != &bcache.head; b = b->next){
+
     if(b->dev == dev && b->blockno == blockno){
       b->refcnt++;
       release(&bcache.lock);
       acquiresleep(&b->lock);
       return b;
     }
+
   }
 
   // Not cached.
   // Recycle the least recently used (LRU) unused buffer.
   for(b = bcache.head.prev; b != &bcache.head; b = b->prev){
+
     if(b->refcnt == 0) {
       b->dev = dev;
       b->blockno = blockno;
@@ -84,6 +86,7 @@ bget(uint dev, uint blockno)
       acquiresleep(&b->lock);
       return b;
     }
+
   }
   panic("bget: no buffers");
 }
@@ -95,26 +98,27 @@ bread(uint dev, uint blockno)
   struct buf *b;
 
   b = bget(dev, blockno);
+
   if(!b->valid) {
     virtio_disk_rw(b, 0);
     b->valid = 1;
   }
+
   return b;
 }
 
 // Write b's contents to disk.  Must be locked.
-void
-bwrite(struct buf *b)
+void bwrite(struct buf *b)
 {
   if(!holdingsleep(&b->lock))
     panic("bwrite");
+
   virtio_disk_rw(b, 1);
 }
 
 // Release a locked buffer.
 // Move to the head of the most-recently-used list.
-void
-brelse(struct buf *b)
+void brelse(struct buf *b)
 {
   if(!holdingsleep(&b->lock))
     panic("brelse");
@@ -123,6 +127,7 @@ brelse(struct buf *b)
 
   acquire(&bcache.lock);
   b->refcnt--;
+
   if (b->refcnt == 0) {
     // no one is waiting for it.
     b->next->prev = b->prev;
@@ -136,15 +141,13 @@ brelse(struct buf *b)
   release(&bcache.lock);
 }
 
-void
-bpin(struct buf *b) {
+void bpin(struct buf *b) {
   acquire(&bcache.lock);
   b->refcnt++;
   release(&bcache.lock);
 }
 
-void
-bunpin(struct buf *b) {
+void bunpin(struct buf *b) {
   acquire(&bcache.lock);
   b->refcnt--;
   release(&bcache.lock);

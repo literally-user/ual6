@@ -19,8 +19,7 @@ int flags2perm(int flags)
     return perm;
 }
 
-int
-exec(char *path, char **argv)
+int exec(char *path, char **argv)
 {
   char *s, *last;
   int i, off;
