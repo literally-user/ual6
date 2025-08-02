@@ -4,9 +4,24 @@
 #include "kernel/fs.h"
 #include "kernel/fcntl.h"
 
-char*
-fmtname(char *path)
-{
+char* fmtname(char*);
+void ls(char*);
+
+
+int main(int argc, char* argv[]) {
+	if (argc < 2) {
+		ls(".");
+		exit(0);
+	}
+	for (int i=1; i<argc; i++) {
+		ls(argv[i]);
+	}
+
+	exit(0);
+}
+
+
+char* fmtname(char *path) {
   static char buf[DIRSIZ+1];
   char *p;
 
@@ -23,9 +38,7 @@ fmtname(char *path)
   return buf;
 }
 
-void
-ls(char *path)
-{
+void ls(char *path) {
   char buf[512], *p;
   int fd;
   struct dirent de;
@@ -70,18 +83,4 @@ ls(char *path)
     break;
   }
   close(fd);
-}
-
-int
-main(int argc, char *argv[])
-{
-  int i;
-
-  if(argc < 2){
-    ls(".");
-    exit(0);
-  }
-  for(i=1; i<argc; i++)
-    ls(argv[i]);
-  exit(0);
 }
