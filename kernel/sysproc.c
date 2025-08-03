@@ -6,8 +6,8 @@
 #include "spinlock.h"
 #include "proc.h"
 
-int freemem_pages(void);
-
+extern int freemem_pages(void);
+extern void procdump(void);
 
 uint64
 sys_exit(void)
@@ -101,3 +101,9 @@ sys_freemem(void)
   return freemem_pages() * PGSIZE;
 }
 
+uint64
+sys_procdump(void)
+{
+	procdump();
+	return 0;
+}

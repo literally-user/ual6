@@ -144,6 +144,7 @@ UPROGS=\
 	$U/_sleep\
 	$U/_clear\
 	$U/_freemem\
+	$U/_ps\
 
 fs.img: mkfs/mkfs README.md $(UPROGS)
 	mkfs/mkfs fs.img README.md $(UPROGS)
